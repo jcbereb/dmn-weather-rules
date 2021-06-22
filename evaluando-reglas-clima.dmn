@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_18zkqqo" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.8.1">
+  <decision id="DSCEvaluandoEstacion" name="Evaluando estacion">
+    <decisionTable id="DecisionTable_0jxvzv5">
+      <input id="Input_1" label="Temperatura" camunda:inputVariable="TemperaturaFinal">
+        <inputExpression id="InputExpression_1" typeRef="integer">
+          <text>TemperaturaFinal</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Estacion" name="estacion" typeRef="string">
+        <outputValues id="UnaryTests_0s2s88p">
+          <text>"invierno","primavera","verano"</text>
+        </outputValues>
+      </output>
+      <rule id="DecisionRule_0x3dbei">
+        <inputEntry id="UnaryTests_0zezu1m">
+          <text>&lt;15</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00uwl9m">
+          <text>"invierno"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07v90w1">
+        <inputEntry id="UnaryTests_1rspbi8">
+          <text>[15..30]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1o7vp6t">
+          <text>"primavera"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17maw7b">
+        <inputEntry id="UnaryTests_0crcfpi">
+          <text>&gt;30</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0k0n997">
+          <text>"verano"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="DSCEvaluandoAmbiente" name="Evaluando ambiente">
+    <variable id="InformationItem_1awhbck" name="resultadoAmbiente" typeRef="string" />
+    <informationRequirement id="InformationRequirement_191oh26">
+      <requiredDecision href="#DSCEvaluandoEstacion" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_159262t" expressionLanguage="javascript">
+      <text>switch(true){
+case estacion=="invierno" &amp;&amp; humedad&lt;40:
+"ambiente seco"; break;
+case estacion=="primavera" &amp;&amp; humedad&gt;=40:
+"ambiente humedo"; break;
+default: "ambiente apropiado"; 
+}</text>
+    </literalExpression>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="DSCEvaluandoEstacion">
+        <dc:Bounds height="80" width="180" x="160" y="250" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1agi4gr" dmnElementRef="DSCEvaluandoAmbiente">
+        <dc:Bounds height="80" width="180" x="160" y="40" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1h60a4z" dmnElementRef="InformationRequirement_191oh26">
+        <di:waypoint x="250" y="250" />
+        <di:waypoint x="250" y="140" />
+        <di:waypoint x="250" y="120" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
